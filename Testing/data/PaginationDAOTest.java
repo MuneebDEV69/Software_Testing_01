@@ -62,4 +62,35 @@ public class PaginationDAOTest {
         assertEquals(content, pages.get(0).getPageContent(), 
             "Page content should contain all 100 characters");
     }
+
+    /**
+     * Test boundary case: Content with 101 characters (exceeds page size by 1)
+     * Expected: Should return 2 pages (first=100 chars, second=1 char)
+     */
+    @Test
+    void testPaginate101Characters() {
+        // Create content with 101 characters (1 more than page size)
+        String content = "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901";
+        
+        // Verify content length is exactly 101
+        assertEquals(101, content.length(), "Test setup: content should be exactly 101 chars");
+        
+        // Call the paginate method
+        List<Pages> pages = PaginationDAO.paginate(content);
+        
+        // Assert that exactly 2 pages are created
+        assertEquals(2, pages.size(), "Content with 101 chars should create 2 pages");
+        
+        // Assert first page has 100 characters
+        assertEquals(100, pages.get(0).getPageContent().length(), 
+            "First page should contain 100 characters");
+        
+        // Assert second page has 1 character
+        assertEquals(1, pages.get(1).getPageContent().length(), 
+            "Second page should contain 1 character");
+        
+        // Assert page numbers are correct
+        assertEquals(1, pages.get(0).getPageNumber(), "First page number should be 1");
+        assertEquals(2, pages.get(1).getPageNumber(), "Second page number should be 2");
+    }
 }
