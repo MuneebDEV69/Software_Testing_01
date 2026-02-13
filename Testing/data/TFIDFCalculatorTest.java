@@ -38,4 +38,18 @@ public class TFIDFCalculatorTest {
         assertEquals(expected, result, 1e-9,
                 "TF-IDF score should match the manually computed value for the simple corpus");
     }
+    
+    /**
+     * Negative test: When the input document is empty, the TF-IDF
+     * calculation should safely return 0.0 instead of failing.
+     */
+    @Test
+    void testCalculateDocumentTfIdfWithEmptyDocumentReturnsZero() {
+        TFIDFCalculator calculator = new TFIDFCalculator();
+
+        double result = calculator.calculateDocumentTfIdf("");
+
+        assertEquals(0.0, result, 1e-9,
+                "Empty document should produce a TF-IDF score of 0.0");
+    }
 }
