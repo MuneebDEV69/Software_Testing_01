@@ -71,4 +71,23 @@ public class SearchWordTest {
                 () -> SearchWord.searchKeyword("ab", docs),
                 "Keyword with length < 3 should throw IllegalArgumentException");
     }
+
+    /**
+     * Negative test: Valid keyword is not present in any document,
+     * so an empty result list should be returned.
+     */
+    @Test
+    void testSearchKeywordNotFound() {
+        Pages page1 = new Pages(1, 1, 1, "This text does not contain the target word");
+        List<Pages> pagesList = new ArrayList<>();
+        pagesList.add(page1);
+
+        Documents doc1 = new Documents(1, "Sample.txt", "hash789", "2024-01-01", "2024-01-01", pagesList);
+        List<Documents> docs = new ArrayList<>();
+        docs.add(doc1);
+
+        List<String> results = SearchWord.searchKeyword("missing", docs);
+
+        assertTrue(results.isEmpty(), "Search should return empty list when keyword is not found");
+    }
 }
