@@ -1,0 +1,21 @@
+# Compiled class files
+bin/
+*.class
+
+# IDE metadata
+.idea/
+.metadata/
+.settings/
+*.iml
+
+# Logs
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build outputs
+target/
+build/
