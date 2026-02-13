@@ -52,4 +52,27 @@ public class TFIDFCalculatorTest {
         assertEquals(0.0, result, 1e-9,
                 "Empty document should produce a TF-IDF score of 0.0");
     }
+
+    /**
+     * Negative test: Document with only non-Arabic special characters.
+     * After preprocessing, the document becomes empty, but if the corpus
+     * already contains Arabic text, the method should still return a
+     * finite TF-IDF score without errors.
+     */
+    @Test
+    void testCalculateDocumentTfIdfWithSpecialCharactersOnly() {
+        TFIDFCalculator calculator = new TFIDFCalculator();
+
+        // Add one simple Arabic document to the corpus
+        calculator.addDocumentToCorpus("ا ب");
+
+        // This document contains only non-Arabic characters and punctuation,
+        // which will be stripped by preprocessing.
+        double result = calculator.calculateDocumentTfIdf("1234 !!!");
+
+        double expected = Math.log(2.0); // corpus size is 1, so log(1 + 1)
+
+        assertEquals(expected, result, 1e-9,
+                "Special-character-only document should yield a deterministic TF-IDF score");
+    }
 }
