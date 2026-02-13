@@ -93,4 +93,27 @@ public class PaginationDAOTest {
         assertEquals(1, pages.get(0).getPageNumber(), "First page number should be 1");
         assertEquals(2, pages.get(1).getPageNumber(), "Second page number should be 2");
     }
+
+    /**
+     * Test negative case: Null content
+     * Expected: Should return 1 page with empty content (graceful handling)
+     */
+    @Test
+    void testPaginateNullContent() {
+        // Pass null as content (negative test case)
+        String content = null;
+        
+        // Call the paginate method with null
+        List<Pages> pages = PaginationDAO.paginate(content);
+        
+        // Assert that 1 empty page is created (graceful null handling)
+        assertEquals(1, pages.size(), "Null content should return 1 empty page");
+        
+        // Assert that page content is empty string
+        assertEquals("", pages.get(0).getPageContent(), 
+            "Page content should be empty string for null input");
+        
+        // Assert page number is 1
+        assertEquals(1, pages.get(0).getPageNumber(), "Page number should be 1");
+    }
 }
