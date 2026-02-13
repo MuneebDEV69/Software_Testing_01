@@ -59,4 +59,16 @@ public class SearchWordTest {
         assertTrue(results.get(0).contains("CarFile.txt"));
         assertTrue(results.get(0).contains("car"));
     }
+
+    /**
+     * Boundary test: Keyword with fewer than 3 characters should throw
+     * IllegalArgumentException according to the implementation.
+     */
+    @Test
+    void testSearchKeywordWithTwoCharactersThrowsException() {
+        List<Documents> docs = new ArrayList<>();
+        assertThrows(IllegalArgumentException.class,
+                () -> SearchWord.searchKeyword("ab", docs),
+                "Keyword with length < 3 should throw IllegalArgumentException");
+    }
 }
