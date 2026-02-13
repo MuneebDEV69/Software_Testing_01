@@ -90,4 +90,17 @@ public class SearchWordTest {
 
         assertTrue(results.isEmpty(), "Search should return empty list when keyword is not found");
     }
+
+    /**
+     * Negative test: When the documents list is empty, a valid keyword
+     * should simply return an empty result list.
+     */
+    @Test
+    void testSearchKeywordWithEmptyDocumentsList() {
+        List<Documents> docs = new ArrayList<>();
+
+        List<String> results = SearchWord.searchKeyword("test", docs);
+
+        assertTrue(results.isEmpty(), "Empty documents list should result in empty search results");
+    }
 }
