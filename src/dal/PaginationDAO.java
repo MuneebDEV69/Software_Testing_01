@@ -8,7 +8,7 @@ import dto.Pages;
 public class PaginationDAO {
 
 	
-	static List<Pages> paginate(String fileContent){
+	public static List<Pages> paginate(String fileContent){
 		int pageSize = 100;
 		int pageNumber = 1;
 		String pageContent = "";
