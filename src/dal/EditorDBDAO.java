@@ -22,12 +22,21 @@ public class EditorDBDAO implements IEditorDBDAO {
 	Connection conn = null;
 
 	public EditorDBDAO() {
-		this.conn = DatabaseConnection.getInstance().getConnection();
-
+		DatabaseConnection dbConn = DatabaseConnection.getInstance();
+		if (dbConn.isConnected()) {
+			this.conn = dbConn.getConnection();
+		} else {
+			LOGGER.error("Database connection is unavailable. EditorDBDAO will not be able to perform DB operations.");
+		}
 	}
 
 	@Override
 	public synchronized boolean createFileInDB(String nameOfFile, String content) {
+		if (conn == null) {
+			LOGGER.error("Cannot create file: database connection is not available.");
+			return false;
+		}
+
 		String hash = null;
 		List<Pages> pages = null;
 
@@ -241,6 +250,10 @@ public class EditorDBDAO implements IEditorDBDAO {
 
 	@Override
 	public boolean updateFileInDB(int fileId, String fileName, int pageNumber, String content) {
+		if (conn == null) {
+			LOGGER.error("Cannot update file: database connection is not available.");
+			return false;
+		}
 
 		PreparedStatement fileStmt = null;
 		PreparedStatement pageStmt = null;
@@ -440,6 +453,10 @@ public class EditorDBDAO implements IEditorDBDAO {
 
 	@Override
 	public boolean deleteFileInDB(int id) {
+		if (conn == null) {
+			LOGGER.error("Cannot delete file: database connection is not available.");
+			return false;
+		}
 		String query = "DELETE FROM FILES WHERE fileId = ?";
 		try (PreparedStatement fileStmt = conn.prepareStatement(query)) {
 
@@ -476,6 +493,11 @@ public class EditorDBDAO implements IEditorDBDAO {
 	@Override
 	public List<Documents> getFilesFromDB() {
 		List<Documents> documents = new ArrayList<>();
+
+		if (conn == null) {
+			LOGGER.error("Cannot fetch files: database connection is not available.");
+			return documents;
+		}
 
 		PreparedStatement stmt = null;
 		String query = null;

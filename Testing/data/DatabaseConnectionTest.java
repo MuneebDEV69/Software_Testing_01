@@ -23,9 +23,20 @@ public class DatabaseConnectionTest {
         // Get second instance of DatabaseConnection
         DatabaseConnection instance2 = DatabaseConnection.getInstance();
         
-        // Assert that both references point to the same object (Singleton property)
+        // Assert that both references point to the same object (Singleton pattern)
         // If this fails, Singleton pattern is broken
         assertSame(instance1, instance2, 
             "DatabaseConnection should return the same instance (Singleton pattern)");
+    }
+
+    /**
+     * Verifies that isConnected() does not throw an exception even when
+     * no database is available (e.g., in CI), and returns a boolean result.
+     */
+    @Test
+    void testIsConnectedDoesNotThrow() {
+        DatabaseConnection instance = DatabaseConnection.getInstance();
+        assertDoesNotThrow(() -> instance.isConnected(),
+            "isConnected() should never throw an exception regardless of connection state");
     }
 }
